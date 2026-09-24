@@ -1,0 +1,5 @@
+# API keys / environment variables
+.env
+
+#List of Lights and IDs
+deviceList.txt
