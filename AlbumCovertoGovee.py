@@ -31,6 +31,3 @@ device = client.get_device("PSU Bedroom")  # Change to your device ID
 client.power(device, True)  # Turn on the device
 #client.set_brightness(device, 10)  # Set brightness to 100%
 
-
-
-    
