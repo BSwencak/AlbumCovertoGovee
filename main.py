@@ -10,13 +10,16 @@ from Spotify.spotify_reader import (
 # Image processing
 from Image_Processing.quadrant_dominant import quadrant_dominant_colors
 
+#Utils
+from Utils.print_color import print_color_block
+
 # Govee
-from Govee.govee_client import init_govee
-from Govee.lamp_controller import update_lamps
+#from Govee.govee_client import init_govee
+#from Govee.lamp_controller import update_lamps
 
 
 # Initialize Govee client
-client = init_govee(os.getenv("GOVEE_API_KEY"))
+#client = init_govee(os.getenv("GOVEE_API_KEY"))
 
 last_track_id = None
 
@@ -35,9 +38,9 @@ while True:
 
             # Print quadrant colors for debugging
             for name, rgb in colors.items():
-                print(f"{name}: {rgb}")
+                print_color_block(f"{name}: {rgb}", rgb)
 
             # Update lamps (each lamp gets its own quadrant color)
-            update_lamps(client, colors)
+            #update_lamps(client, colors)
 
     time.sleep(1)
