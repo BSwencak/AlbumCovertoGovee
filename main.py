@@ -1,5 +1,5 @@
 import time
-
+import os
 # Spotify
 from Spotify.spotify_reader import (
     get_current_track_id,
@@ -16,7 +16,7 @@ from Govee.lamp_controller import update_lamps
 
 
 # Initialize Govee client
-client = init_govee()
+client = init_govee(os.getenv("GOVEE_API_KEY"))
 
 last_track_id = None
 
