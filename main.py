@@ -40,7 +40,13 @@ while True:
             for name, rgb in colors.items():
                 print_color_block(f"{name}: {rgb}", rgb)
 
-            # Update lamps (each lamp gets its own quadrant color)
-            #update_lamps(client, colors)
+            if 'last_img' not in locals() or last_img != img:
+                last_img = img
+                # Update lamps (each lamp gets its own quadrant color)
+                #update_lamps(client, colors)
+                print("LAMPS UPDATED")
+            else:
+                last_img = img
+                print("LAMPS NOT UPDATED")
 
     time.sleep(1)
