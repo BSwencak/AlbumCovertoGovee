@@ -7,10 +7,10 @@ load_dotenv()
 
 # Quadrant → Lamp mapping using your real device IDs
 QUADRANT_TO_LAMP = {
-    "top_left": os.getenv("LAMP_1"),
+    "top_left": os.getenv("LAMP_TOP"),
     "top_right": os.getenv("LAMP_2"),
-    "bottom_left": os.getenv("LAMP_3"),
-    "bottom_right": os.getenv("LAMP_4")
+    "bottom_left": os.getenv("LAMP_SIDE"),
+    "bottom_right": os.getenv("LAMP_1")
 }
 
 # Cache to avoid redundant updates
