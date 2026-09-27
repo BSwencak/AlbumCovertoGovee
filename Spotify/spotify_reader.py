@@ -4,22 +4,29 @@ import requests
 from PIL import Image
 from io import BytesIO
 
-
-# Spotify authentication
 sp = spotipy.Spotify(
     auth_manager=SpotifyOAuth(
         scope="user-read-currently-playing user-read-playback-state"
     )
 )
 
-# Fetch album art
+def get_current_track_id():
+    current = sp.current_playback()
+    if current and current.get("item"):
+        return current["item"]["id"]
+    return None
+
+def get_current_track_name():
+    current = sp.current_playback()
+    if current and current.get("item"):
+        return current["item"]["name"]
+    return None
+
 def get_album_image():
     current = sp.current_playback()
     if not current or not current.get("item"):
-        print("No song playing")
         return None
 
-    images = current["item"]["album"]["images"]
-    url = images[0]["url"]  # highest resolution
+    url = current["item"]["album"]["images"][0]["url"]
     img_data = requests.get(url).content
     return Image.open(BytesIO(img_data)).convert("RGB")
