@@ -4,7 +4,9 @@ import os
 from Spotify.spotify_reader import (
     get_current_track_id,
     get_current_track_name,
-    get_album_image
+    get_album_image,
+    get_current_album_id,
+    get_current_album_name
 )
 
 # Image processing
@@ -22,9 +24,11 @@ from Utils.print_color import print_color_block
 #client = init_govee(os.getenv("GOVEE_API_KEY"))
 
 last_track_id = None
+last_album_id = None
 
 while True:
     track_id = get_current_track_id()
+    album_id = get_current_album_id()
 
     if track_id and track_id != last_track_id:
         last_track_id = track_id
@@ -40,12 +44,12 @@ while True:
             for name, rgb in colors.items():
                 print_color_block(f"{name}: {rgb}", rgb)
 
-            if 'last_img' not in locals() or last_img != img:
-                # Update lamps (each lamp gets its own quadrant color)
-                #update_lamps(client, colors)
-                print("LAMPS UPDATED")
-            else:
-                print("LAMPS NOT UPDATED")
-            last_img = img
+
+    if album_id and album_id != last_album_id:
+        print(f"New album detected: {get_current_album_name()}")
+        # Update lamps (each lamp gets its own quadrant color)
+        #update_lamps(client, colors)
+        print("LAMPS UPDATED")
+        last_album_id = album_id
 
     time.sleep(1)

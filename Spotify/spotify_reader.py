@@ -30,3 +30,15 @@ def get_album_image():
     url = current["item"]["album"]["images"][0]["url"]
     img_data = requests.get(url).content
     return Image.open(BytesIO(img_data)).convert("RGB")
+
+def get_current_album_id():
+    current = sp.current_playback()
+    if current and current.get("item"):
+        return current["item"]["album"]["id"]
+    return None
+
+def get_current_album_name():
+    current = sp.current_playback()
+    if current and current.get("item"):
+        return current["item"]["album"]["name"]
+    return None
