@@ -16,12 +16,12 @@ from Image_Processing.quadrant_dominant import quadrant_dominant_colors
 from Utils.print_color import print_color_block
 
 # Govee
-#from Govee.govee_client import init_govee
-#from Govee.lamp_controller import update_lamps
+from Govee.govee_client import init_govee
+from Govee.lamp_controller import update_lamps
 
 
 # Initialize Govee client
-#client = init_govee(os.getenv("GOVEE_API_KEY"))
+client = init_govee(os.getenv("GOVEE_API_KEY"))
 
 last_track_id = None
 last_album_id = None
@@ -48,7 +48,7 @@ while True:
     if album_id and album_id != last_album_id:
         print(f"New album detected: {get_current_album_name()}")
         # Update lamps (each lamp gets its own quadrant color)
-        #update_lamps(client, colors)
+        update_lamps(client, colors)
         print("LAMPS UPDATED")
         last_album_id = album_id
 
