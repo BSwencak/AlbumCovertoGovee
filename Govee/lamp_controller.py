@@ -13,12 +13,8 @@ QUADRANT_TO_LAMP = {
     "bottom_right": os.getenv("LAMP_1")
 }
 
-# Cache to avoid redundant updates
 last_colors = {}
 
-def is_similar(c1, c2, tolerance=10):
-    """Check if two RGB colors are close enough to skip updating."""
-    return all(abs(a - b) < tolerance for a, b in zip(c1, c2))
 
 def fade_color(client, lamp_name, old_rgb, new_rgb, steps=5, delay=0.01):
     """Fade smoothly from old_rgb to new_rgb."""
@@ -52,9 +48,7 @@ def update_lamps(client, colors):
 
         old_rgb = last_colors[lamp_name]
 
-        # Skip tiny changes
-        if is_similar(old_rgb, rgb):
-            continue
+
 
         print(f"Fading {quadrant} lamp ({lamp_name}) from {old_rgb} → {rgb}")
         fade_color(client, lamp_name, old_rgb, rgb)
