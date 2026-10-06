@@ -7,3 +7,16 @@ planning.txt
 .cache
 .vscode
 test
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+Govee/__pycache__
+Image_Processing/__pycache__
+Spotify/__pycache__
+Utils/__pycache__
+
