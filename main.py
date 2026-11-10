@@ -26,30 +26,39 @@ client = init_govee(os.getenv("GOVEE_API_KEY"))
 last_track_id = None
 last_album_id = None
 
-while True:
-    track_id = get_current_track_id()
-    album_id = get_current_album_id()
+with open("spotify.pid", "w") as f:
+    f.write(str(os.getpid()))
 
-    if track_id and track_id != last_track_id:
-        last_track_id = track_id
+try:
+    while True:
+        track_id = get_current_track_id()
+        album_id = get_current_album_id()
 
-        print(f"\nNew song detected: {get_current_track_name()}")
+        if track_id and track_id != last_track_id:
+            last_track_id = track_id
 
-        img = get_album_image()
-        if img:
-            # Extract colors for all quadrants
-            colors = quadrant_dominant_colors(img)
+            print(f"\nNew song detected: {get_current_track_name()}")
 
-            # Print quadrant colors for debugging
-            for name, rgb in colors.items():
-                print_color_block(f"{name}: {rgb}", rgb)
+            img = get_album_image()
+            if img:
+                # Extract colors for all quadrants
+                colors = quadrant_dominant_colors(img)
+
+                # Print quadrant colors for debugging
+                for name, rgb in colors.items():
+                    print_color_block(f"{name}: {rgb}", rgb)
 
 
-    if album_id and album_id != last_album_id:
-        print(f"New album detected: {get_current_album_name()}")
-        # Update lamps (each lamp gets its own quadrant color)
-        update_lamps(client, colors)
-        print("LAMPS UPDATED")
-        last_album_id = album_id
+        if album_id and album_id != last_album_id:
+            print(f"New album detected: {get_current_album_name()}")
+            # Update lamps (each lamp gets its own quadrant color)
+            update_lamps(client, colors)
+            print("LAMPS UPDATED")
+            last_album_id = album_id
 
-    time.sleep(1)
+        time.sleep(1)
+
+
+finally:
+    if os.path.exists("spotify.pid"):
+        os.remove("spotify.pid")
