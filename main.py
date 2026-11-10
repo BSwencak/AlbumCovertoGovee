@@ -26,7 +26,12 @@ client = init_govee(os.getenv("GOVEE_API_KEY"))
 last_track_id = None
 last_album_id = None
 
-with open("spotify.pid", "w") as f:
+PID_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "spotify.pid"
+)
+
+with open(PID_FILE, "w") as f:
     f.write(str(os.getpid()))
 
 try:
@@ -60,5 +65,5 @@ try:
 
 
 finally:
-    if os.path.exists("spotify.pid"):
-        os.remove("spotify.pid")
+    if os.path.exists(PID_FILE):
+        os.remove(PID_FILE)

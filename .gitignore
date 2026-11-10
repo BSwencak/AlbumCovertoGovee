@@ -20,3 +20,5 @@ Image_Processing/__pycache__
 Spotify/__pycache__
 Utils/__pycache__
 
+spotify.pid
+Utils\__pycache__

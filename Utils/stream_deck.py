@@ -1,32 +1,51 @@
 import sys, os, subprocess, psutil
-import subprocess
 
 action = sys.argv[1]
 
+project_root = os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
+
+PID_FILE = os.path.join(
+    project_root,
+    "spotify.pid"
+)
 
 if action == "start":
 
-    if os.path.exists("spotify.pid"):
+    if os.path.exists(PID_FILE):
         print("Spotify mode already running.")
         sys.exit()
 
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
     subprocess.Popen(
-        ["python", os.path.join(project_root, "main.py")]
+    ["python", os.path.join(project_root, "main.py")],
+    cwd=project_root
     )
 
 elif action == "stop":
 
-    if not os.path.exists("spotify.pid"):
+    if not os.path.exists(PID_FILE):
         print("Spotify mode is not running.")
         sys.exit()
 
-    with open("spotify.pid") as f:
+    with open(PID_FILE) as f:
         pid = int(f.read())
 
     try:
-        
-        psutil.Process(pid).terminate()
+        process = psutil.Process(pid)
+        process.terminate()
+        process.wait(timeout=5)
+
     except psutil.NoSuchProcess:
         pass
+
+    if os.path.exists(PID_FILE):
+        os.remove(PID_FILE)
+
+    subprocess.run(
+        [
+            "python",
+            r"G:\PC LOCAL DEV\StreamDeck-Govee-Light-Controller-MEONLY\light_controller.py",
+            "warm"
+        ]
+    )
