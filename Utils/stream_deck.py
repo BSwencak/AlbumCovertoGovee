@@ -18,8 +18,8 @@ if action == "start":
         sys.exit()
 
     subprocess.Popen(
-    ["pythonw", os.path.join(project_root, "main.py")],
-    cwd=project_root, creationflags=subprocess.CREATE_NO_WINDOW
+    ["python", os.path.join(project_root, "main.py")],
+    cwd=project_root,# creationflags=subprocess.CREATE_NO_WINDOW
     )
 
 elif action == "stop":
@@ -44,8 +44,8 @@ elif action == "stop":
 
     subprocess.run(
         [
-            "pythonw",
+            "python",
             r"G:\PC LOCAL DEV\StreamDeck-Govee-Light-Controller-MEONLY\light_controller.py",
             "warm"
-        ], creationflags=subprocess.CREATE_NO_WINDOW
+        ],# creationflags=subprocess.CREATE_NO_WINDOW
     )

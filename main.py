@@ -1,12 +1,11 @@
 import time
 import os
+import requests
+from PIL import Image
+from io import BytesIO
 # Spotify
 from Spotify.spotify_reader import (
-    get_current_track_id,
-    get_current_track_name,
-    get_album_image,
-    get_current_album_id,
-    get_current_album_name
+    get_current_playback
 )
 
 # Image processing
@@ -36,33 +35,31 @@ with open(PID_FILE, "w") as f:
 
 try:
     while True:
-        track_id = get_current_track_id()
-        album_id = get_current_album_id()
+        current = get_current_playback()
 
-        if track_id and track_id != last_track_id:
-            last_track_id = track_id
+        if current and current.get("item"):
 
-            print(f"\nNew song detected: {get_current_track_name()}")
+            track_id = current["item"]["id"]
+            album_id = current["item"]["album"]["id"]
 
-            img = get_album_image()
-            if img:
-                # Extract colors for all quadrants
+            if track_id != last_track_id:
+                last_track_id = track_id
+
+                print(f"\nNew song detected: {current['item']['name']}")
+
+                url = current["item"]["album"]["images"][0]["url"]
+                img = Image.open(BytesIO(requests.get(url).content)).convert("RGB")
+
                 colors = quadrant_dominant_colors(img)
 
-                # Print quadrant colors for debugging
-                for name, rgb in colors.items():
-                    print_color_block(f"{name}: {rgb}", rgb)
+            if album_id != last_album_id:
+                print(f"New album detected: {current['item']['album']['name']}")
 
+                update_lamps(client, colors)
 
-        if album_id and album_id != last_album_id:
-            print(f"New album detected: {get_current_album_name()}")
-            # Update lamps (each lamp gets its own quadrant color)
-            update_lamps(client, colors)
-            print("LAMPS UPDATED")
-            last_album_id = album_id
+                last_album_id = album_id
 
         time.sleep(1)
-
 
 finally:
     if os.path.exists(PID_FILE):

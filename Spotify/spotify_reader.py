@@ -10,6 +10,9 @@ sp = spotipy.Spotify(
     )
 )
 
+def get_current_playback():
+    return sp.current_playback()
+
 def get_current_track_id():
     current = sp.current_playback()
     if current and current.get("item"):
